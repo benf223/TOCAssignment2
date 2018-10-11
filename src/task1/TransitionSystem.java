@@ -13,6 +13,10 @@ public class TransitionSystem
 	private HashSet<Proposition> ap;
 	private HashSet<State> i;
 	private HashMap<State, HashSet<Proposition>> l;
+
+	public TransitionSystem(){
+		this(null, null, null, null, null, null);
+	}
 	
 	public TransitionSystem(HashSet<State> s, HashSet<String> act, HashMap<Tuple<State, String>, State> arrow, HashSet<Proposition> ap, HashSet<State> i, HashMap<State, HashSet<Proposition>> l)
 	{
