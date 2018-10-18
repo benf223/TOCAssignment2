@@ -2,54 +2,43 @@ package task2;
 
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Location {
     //p
     public ArrayList<Process> data;
 
     //y
-    public Process[] levels;
-
-    public int j;
+    public LinkedList<Process> queue;
 
     public Location(int n) {
         data = new ArrayList<>();
-        j = 0;
 
-        levels = new Process[n];
+        queue = new LinkedList<>();
 
         for (int i =0; i < n; ++i) {
             data.add(new Process(i, this));
         }
     }
 
-    public Location(int j, ArrayList<Process> data, Process[] levels)
+    public Location(ArrayList<Process> data, LinkedList<Process> queue)
     {
-        this.j = j;
         this.data = new ArrayList<>();
 
         for (Process p : data)
         {
-            this.data.add(new Process(this, p.programState, p.level, p.number));
+            this.data.add(new Process(this, p.programState, p.number));
         }
 
-        this.levels = levels;
+        this.queue = new LinkedList<>();
+
+        for (Process p : queue)
+        {
+            this.queue.addLast(this.data.get(this.data.indexOf(p)));
+        }
     }
 
     public ProgramState updateProcessState(int i) {
-        if (data.get(i).programState.equals(ProgramState.NON_CRIT))
-        {
-            data.get(i).level = j;
-            levels[j] = data.get(i);
-
-            ++j;
-
-            if (j >= data.size())
-            {
-                j = 0;
-            }
-        }
-
         data.get(i).setNextState();
 
         return data.get(i).programState;

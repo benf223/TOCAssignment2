@@ -3,20 +3,17 @@ package task2;
 public class Process {
     public Location parent;
     public ProgramState programState;
-    public int level;
     public int number;
 
     public Process(int n, Location parent) {
         this.parent = parent;
         this.number = n;
         programState = ProgramState.NON_CRIT;
-        level = 0;
     }
 
-    public Process(Location parent, ProgramState programState, int level, int number) {
+    public Process(Location parent, ProgramState programState, int number) {
         this.parent = parent;
         this.programState = programState;
-        this.level = level;
         this.number = number;
     }
 
@@ -25,35 +22,55 @@ public class Process {
         {
             case CRIT:
             {
-                this.level = 0;
                 programState = ProgramState.NON_CRIT;
 
                 break;
             }
             case NON_CRIT:
             {
+                this.parent.queue.addLast(this);
                 programState = ProgramState.WAIT;
 
                 break;
             }
             case WAIT:
             {
-                for (Process t : parent.data)
+                if (parent.queue.peek().equals(this))
                 {
-                    if (t.level < parent.j)
+                    for (Process t : parent.data)
                     {
-                        programState = ProgramState.CRIT;
-                        return;
+                        if (t.programState.equals(ProgramState.CRIT))
+                        {
+                            return;
+                        }
                     }
-                }
 
-                if (parent.levels[parent.j].number != this.number)
-                {
+                    parent.queue.pop();
+
                     programState = ProgramState.CRIT;
                 }
 
                 break;
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Process)
+        {
+            if (((Process) obj).programState.equals(this.programState))
+            {
+                if (((Process) obj).number == this.number)
+                {
+                    if (((Process) obj).parent.equals(this.parent))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

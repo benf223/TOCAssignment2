@@ -1,6 +1,5 @@
 package task2;
 
-import task1.PropositionalStatement;
 import task1.Tuple;
 
 import java.util.*;
@@ -10,7 +9,7 @@ public class ProgramGraph {
     private HashSet<Location> loc;
     private HashSet<String> act;
     // Location + (Guard + Act) -> location
-    private HashMap<Tuple<Location, Tuple<String, String>>, Location> arrow;
+    private HashSet<ThreeTuple<Location, Tuple<String, String>, Location>> arrow;
     private HashSet<Location> loc0;
 
     public ProgramGraph() {
@@ -19,84 +18,94 @@ public class ProgramGraph {
         this.act.add("goWait");
         this.act.add("goCrit");
         this.act.add("goNonCrit");
-        this.arrow = new HashMap<>();
+        this.arrow = new HashSet<>();
         this.loc0 = new HashSet<>();
     }
 
     public void generate(int numberOfProcesses) {
-        LinkedList<Location> queue = new LinkedList<>();
-
-        Location l = new Location(numberOfProcesses);
-        loc0.add(l);
-        loc.add(l);
-        queue.add(loc0.iterator().next());
+        LinkedList<Tuple<Location, Location>> queue = new LinkedList<>();
 
         recur(queue, numberOfProcesses);
 
         System.out.println("Done");
     }
 
-    private void recur(LinkedList<Location> queue, int numberofProcesses) {
-        if (queue.size() == 1) {
-            if (loc.contains(queue.getFirst())) {
-                // Check that arrow has all its transitions for the state in the queue
-                if (arrow.get(new Tuple<>(queue.getFirst(), new Tuple<>("Crit-NonCrit", "goNonCrit"))) != null) {
-                    if (arrow.get(new Tuple<>(queue.getFirst(), new Tuple<>("Wait-Crit", "goCrit"))) != null) {
-                        if (arrow.get(new Tuple<>(queue.getFirst(), new Tuple<>("NonCrit-Wait", "goWait"))) != null) {
-                            return;
-                        }
-                    }
+    private void recur(LinkedList<Tuple<Location, Location>> queue, int numberofProcesses) {
+        Tuple<Location, Location> current;
+        Location curLoc;
+
+        if (queue.size() == 0) {
+            if (loc.size() == 0)
+            {
+                curLoc = new Location(numberofProcesses);
+                loc0.add(curLoc);
+                loc.add(curLoc);
+
+                for (int i = 0; i < numberofProcesses; ++i)
+                {
+                    Location next = new Location(curLoc.data, (LinkedList<Process>) curLoc.queue.clone());
+
+                    next.updateProcessState(i);
+                    queue.add(new Tuple<>(curLoc, next));
                 }
+            }
+            else
+            {
+                return;
             }
         }
+        else
+        {
+            current = queue.pop();
+            curLoc = current.second;
+            loc.add(curLoc);
 
-        Location curLoc = queue.pop();
+            for (int i = 0; i < numberofProcesses; ++i)
+            {
+                Location next = new Location(curLoc.data, (LinkedList<Process>) curLoc.queue.clone());
 
-//        int j = curLoc.j;
-        for (int i = 0; i < numberofProcesses; ++i) {
-            Location next = new Location(curLoc.j, curLoc.data, curLoc.levels.clone());
-            ProgramState state = next.updateProcessState(i);
+                next.updateProcessState(i);
 
-            Tuple<Location, Tuple<String, String>> nextArrow = null;
-
-            switch (state) {
-                case NON_CRIT: {
-                    nextArrow = new Tuple<>(curLoc, new Tuple<>("Crit-NonCrit", "goNonCrit"));
-
-                    if (!arrow.containsKey(nextArrow)) {
-                        arrow.put(nextArrow, next);
-                    }
-
-                    break;
-                }
-                case WAIT: {
-                    nextArrow = new Tuple<>(curLoc, new Tuple<>("NonCrit-Wait", "goWait"));
-
-                    if (!arrow.containsKey(nextArrow)) {
-                        arrow.put(nextArrow, next);
-                    }
-
-                    break;
-                }
-                case CRIT: {
-                    nextArrow = new Tuple<>(curLoc, new Tuple<>("Wait-Crit", "goCrit"));
-
-                    if (!arrow.containsKey(nextArrow)) {
-                        arrow.put(nextArrow, next);
-                    }
-
-                    break;
+                if (!loc.contains(next))
+                {
+                    queue.addLast(new Tuple<>(curLoc, next));
                 }
             }
 
-            if (!loc.contains(next)) {
-                loc.add(new Location(next.j, (ArrayList<Process>) next.data.clone(), next.levels.clone()));
+            for (int i = 0; i < numberofProcesses; ++i)
+            {
+                Location clonedCurrent = new Location(current.first.data, (LinkedList<Process>) current.first.queue.clone());
 
-                if (!queue.contains(next)) {
-                    queue.add(next);
-                } else {
-                    queue.remove(next);
+                ProgramState state = clonedCurrent.updateProcessState(i);
+
+                if (state.equals(curLoc.data.get(i).programState))
+                {
+                    ThreeTuple<Location, Tuple<String, String>, Location> nextArrow = new ThreeTuple<>(current.first, curLoc);
+
+                    switch (state) {
+                        case NON_CRIT: {
+                            nextArrow.second = new Tuple<>("Crit-NonCrit", "goNonCrit") ;
+
+                            break;
+                        }
+                        case WAIT: {
+                            nextArrow.second = new Tuple<>("NonCrit-Wait", "goWait");
+
+                            break;
+                        }
+                        case CRIT: {
+                            nextArrow.second = new Tuple<>("Wait-Crit", "goCrit");
+
+                            break;
+                        }
+                    }
+
+                    if (!arrow.contains(nextArrow))
+                    {
+                        arrow.add(nextArrow);
+                    }
                 }
+
             }
         }
 
