@@ -12,7 +12,7 @@ public class Task1Driver
 		
 		try
 		{
-			System.out.println("Satisfies statement: " + TransitionSystem.getInstance().checkInvariant(statement, null, null));
+			System.out.println("Satisfies statement: " + TransitionSystem.getInstance().checkInvariant(statement));
 		}
 		catch (Exception e)
 		{
@@ -35,7 +35,7 @@ public class Task1Driver
 		
 		try
 		{
-			System.out.println("Satisfies statement: " + TransitionSystem.getInstance().checkInvariant(statement8, null, null));
+			System.out.println("Satisfies statement: " + TransitionSystem.getInstance().checkInvariant(statement8));
 		}
 		catch (Exception e)
 		{

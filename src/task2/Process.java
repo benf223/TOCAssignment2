@@ -63,7 +63,7 @@ public class Process {
             {
                 if (((Process) obj).number == this.number)
                 {
-                    if (((Process) obj).parent.equals(this.parent))
+                    if (((Process) obj).parent.hashCode() == this.parent.hashCode())
                     {
                         return true;
                     }

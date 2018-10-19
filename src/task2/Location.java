@@ -1,7 +1,10 @@
 package task2;
 
 
+import task1.Proposition;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class Location {
@@ -16,25 +19,25 @@ public class Location {
 
         queue = new LinkedList<>();
 
-        for (int i =0; i < n; ++i) {
+        for (int i = 0; i < n; ++i) {
             data.add(new Process(i, this));
         }
     }
 
-    public Location(ArrayList<Process> data, LinkedList<Process> queue)
-    {
+    public Location(ArrayList<Process> data, LinkedList<Process> queue) {
         this.data = new ArrayList<>();
 
-        for (Process p : data)
-        {
+        for (Process p : data) {
             this.data.add(new Process(this, p.programState, p.number));
         }
 
         this.queue = new LinkedList<>();
 
-        for (Process p : queue)
+        if (queue.size() > 0)
         {
-            this.queue.addLast(this.data.get(this.data.indexOf(p)));
+            for (Process p : queue) {
+                this.queue.addLast(this.data.get(this.data.indexOf(p)));
+            }
         }
     }
 
@@ -45,19 +48,39 @@ public class Location {
     }
 
     @Override
+    public String toString() {
+        String string = "";
+
+        for (Process p : data)
+        {
+            string += ProgramState.getLabel(p.programState);
+        }
+
+        string += "-" + data.indexOf(queue.peek());
+
+        return string;
+    }
+
+    @Override
     public boolean equals(Object obj) {
 
-        if (obj instanceof Location)
-        {
-            for (int i = 0; i < data.size(); ++i)
-            {
-                if (!((Location) obj).data.get(i).programState.equals(data.get(i).programState))
-                {
+        if (obj instanceof Location) {
+            for (int i = 0; i < data.size(); ++i) {
+                if (!((Location) obj).data.get(i).programState.equals(data.get(i).programState)) {
+
                     return false;
                 }
             }
 
-            return true;
+            if (((Location) obj).queue.size() == this.queue.size()) {
+                if (this.queue.size() > 0) {
+                    if (((Location) obj).queue.peek().equals(this.queue.peek())) {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            }
         }
 
         return false;
@@ -67,11 +90,21 @@ public class Location {
     public int hashCode() {
         int sum = 0;
 
-        for (Process p : data)
-        {
+        for (Process p : data) {
             sum += p.programState.hashCode();
         }
 
         return sum;
+    }
+
+    public HashSet<Proposition> getAP() {
+        HashSet<Proposition> propositions = new HashSet<>();
+
+        for (int i = 0; i < data.size(); ++i)
+        {
+            propositions.add(new Proposition(data.get(i).toString() + (i + 1), true));
+        }
+
+        return propositions;
     }
 }

@@ -1,8 +1,12 @@
 package task1;
 
+import task2.Location;
+import task2.ProgramGraph;
+import task2.ProgramState;
+import task2.ThreeTuple;
+
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Stack;
 
 public class TransitionSystem
@@ -15,7 +19,7 @@ public class TransitionSystem
 	private HashMap<State, HashSet<Proposition>> l;
 
 	public TransitionSystem(){
-		this(null, null, null, null, null, null);
+		this(new HashSet<>(), new HashSet<>(), new HashMap<>(), new HashSet<>(), new HashSet<>(), new HashMap<>());
 	}
 	
 	public TransitionSystem(HashSet<State> s, HashSet<String> act, HashMap<Tuple<State, String>, State> arrow, HashSet<Proposition> ap, HashSet<State> i, HashMap<State, HashSet<Proposition>> l)
@@ -27,8 +31,13 @@ public class TransitionSystem
 		this.i = i;
 		this.l = l;
 	}
-	
-	public boolean checkInvariant(PropositionalStatement statement, Stack<State> states, HashSet<State> done) throws Exception
+
+	public boolean checkInvariant(PropositionalStatement statement) throws Exception
+	{
+		return checkInvariant(statement, null, null);
+	}
+
+    public boolean checkInvariant(PropositionalStatement statement, Stack<State> states, HashSet<State> done) throws Exception
 	{
 		if (states == null)
 		{
@@ -203,5 +212,58 @@ public class TransitionSystem
 		l.put(new State("p"), abc);
 		
 		return new TransitionSystem(states, act, arrow, ap, i, l);
+	}
+
+	public static TransitionSystem generateFromPG(ProgramGraph graph, int numberOfProcesses) {
+		TransitionSystem system = new TransitionSystem();
+
+		for (int i = 0; i < numberOfProcesses; ++i)
+		{
+			system.ap.add(new Proposition(ProgramState.getLabel(ProgramState.NON_CRIT) + (i + 1), false));
+			system.ap.add(new Proposition(ProgramState.getLabel(ProgramState.WAIT) + (i + 1), false));
+			system.ap.add(new Proposition(ProgramState.getLabel(ProgramState.CRIT) + (i + 1), false));
+		}
+
+		for (Location l : graph.getLocations())
+		{
+			State toAdd = new State(l.toString());
+
+			system.s.add(toAdd);
+			HashSet<Proposition> fL = l.getAP();
+
+			if (fL.size() != system.ap.size())
+			{
+				for (Proposition p : system.ap)
+				{
+					if (!fL.contains(p))
+					{
+						fL.add(p);
+					}
+				}
+			}
+
+			system.l.put(toAdd, fL);
+		}
+
+		for (Location l : graph.getLoc0())
+		{
+			system.i.add(new State(l.toString()));
+		}
+
+		system.act = graph.getActions();
+
+		// Arrows
+
+		for (ThreeTuple<Location, Tuple<String, String>, Location> arr : graph.getArrow())
+		{
+			State from = new State(arr.first.toString());
+			String act = arr.second.second;
+			State to = new State(arr.third.toString());
+
+			system.arrow.put(new Tuple<>(from, act), to);
+
+		}
+
+		return system;
 	}
 }
