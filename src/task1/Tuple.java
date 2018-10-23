@@ -1,6 +1,6 @@
 package task1;
 
-public class Tuple <T, P>
+public class Tuple<T, P>
 {
 	public final T first;
 	public final P second;

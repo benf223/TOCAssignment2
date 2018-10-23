@@ -15,4 +15,21 @@ public class Proposition
 	{
 		return set;
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		return name.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj instanceof Proposition)
+		{
+			return ((Proposition) obj).name.equals(this.name);
+		}
+		
+		return false;
+	}
 }

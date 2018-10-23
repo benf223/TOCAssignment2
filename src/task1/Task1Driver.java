@@ -20,22 +20,20 @@ public class Task1Driver
 		}
 		
 		// Statement equivalent to (!(a ^ b) -> c) v !c
-		PropositionalStatement statement4 = new PropositionalStatement(Symbol.STATEMENT, new Proposition("b", false), null);
-		statement3 = new PropositionalStatement(Symbol.STATEMENT, new Proposition("a", false), null);
-		statement2 = new PropositionalStatement(Symbol.STATEMENT, new Proposition("c", false), null);
-		statement1 = new PropositionalStatement(Symbol.AND, null, new Tuple<>(statement3, statement4));
-		PropositionalStatement statement5 = new PropositionalStatement(Symbol.NOT, null, new Tuple<>(statement1, null));
-		statement = new PropositionalStatement(Symbol.IMPLICATION, null, new Tuple<>(statement5, statement2));
-		
-		PropositionalStatement statement6 = new PropositionalStatement(Symbol.STATEMENT, new Proposition("c", false), null);
-		PropositionalStatement statement7 = new PropositionalStatement(Symbol.NOT, null, new Tuple<>(statement6, null));
-		PropositionalStatement statement8 = new PropositionalStatement(Symbol.OR, null, new Tuple<>(statement, statement7));
+		PropositionalStatement baseA = new PropositionalStatement(Symbol.STATEMENT, new Proposition("a", false), null);
+		PropositionalStatement baseB = new PropositionalStatement(Symbol.STATEMENT, new Proposition("b", false), null);
+		PropositionalStatement baseC = new PropositionalStatement(Symbol.STATEMENT, new Proposition("c", false), null);
+		PropositionalStatement aAndB = new PropositionalStatement(Symbol.AND, null, new Tuple<>(baseA, baseB));
+		PropositionalStatement notAAndB = new PropositionalStatement(Symbol.NOT, null, new Tuple<>(aAndB, null));
+		PropositionalStatement notAAndBImpliesC = new PropositionalStatement(Symbol.IMPLICATION, null, new Tuple<>(notAAndB, baseC));
+		PropositionalStatement notC = new PropositionalStatement(Symbol.NOT, null, new Tuple<>(baseC, null));
+		PropositionalStatement top = new PropositionalStatement(Symbol.OR, null, new Tuple<>(notAAndBImpliesC, notC));
 		
 		System.out.println();
 		
 		try
 		{
-			System.out.println("Satisfies statement: " + TransitionSystem.getInstance().checkInvariant(statement8));
+			System.out.println("Satisfies statement: " + TransitionSystem.getInstance().checkInvariant(top));
 		}
 		catch (Exception e)
 		{
