@@ -1,5 +1,11 @@
 package task1;
 
+
+/**
+ * ID: 15906291, 15904719
+ * Names: Ben Fisher, Jethro Tuburan
+ * Class that describes a Proposition and it's name with a boolean value.
+ */
 public class Proposition
 {
 	public final String name;

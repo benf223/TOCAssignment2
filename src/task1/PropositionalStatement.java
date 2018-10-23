@@ -3,6 +3,12 @@ package task1;
 import java.util.HashSet;
 import java.util.Iterator;
 
+/**
+ * ID: 15906291, 15904719
+ * Names: Ben Fisher, Jethro Tuburan
+ * Class that describes a PropositionalStatement in the form of a tree with each Propositional statement
+ * having children or a way to evaluate the expression formed by the tree.
+ */
 public class PropositionalStatement
 {
 	private Symbol base;

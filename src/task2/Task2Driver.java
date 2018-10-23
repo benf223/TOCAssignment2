@@ -4,6 +4,11 @@ import task1.*;
 
 import java.util.ArrayList;
 
+/**
+ * ID: 15906291, 15904719
+ * Names: Ben Fisher, Jethro Tuburan
+ * Class that contains a main method to drive the functionality of the second task
+ */
 public class Task2Driver
 {
 	public static final int NUMBER_OF_PROCESSES = 2;
@@ -32,8 +37,6 @@ public class Task2Driver
 		{
 			e.printStackTrace();
 		}
-		
-		while (true);
 	}
 	
 	private static int calculateStateCount()

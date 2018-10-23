@@ -1,5 +1,10 @@
 package task1;
 
+/**
+ * ID: 15906291, 15904719
+ * Names: Ben Fisher, Jethro Tuburan
+ * Wrapper class for a string for clarity
+ */
 public class State
 {
 	public final String name;

@@ -7,12 +7,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 
+/**
+ * ID: 15906291, 15904719
+ * Names: Ben Fisher, Jethro Tuburan
+ * Class that describes a Location in a Program graph.
+ * This class is designed to represent an interleaving of processes of the Peterson's mutual exclusion algorithm.
+ * This class implements the algorithm slightly differently with a queue but the functionality appears identical.
+ */
 public class Location
 {
-	//p
 	public ArrayList<Process> data;
 	
-	//y
 	public LinkedList<Process> queue;
 	
 	public Location(int n)

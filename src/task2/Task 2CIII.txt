@@ -1,0 +1,10 @@
+Usage of resources by Task2Driver while constructing a ProgramGraph
+#Process Count		#RAM usage			#Time to execute
+	2					13MB				5.08ms
+	3					13MB				7.92ms
+	4					16.5MB				16.58ms
+	5					30.1MB				44.88ms
+	6					120MB				144.6ms
+	7					200MB				1.2s
+	8					1.2GB				19.5s
+	9					5.8GB				397.2s

@@ -1,5 +1,10 @@
 package task1;
 
+/**
+ * ID: 15906291, 15904719
+ * Names: Ben Fisher, Jethro Tuburan
+ * Class that describes a pair of Generic objects
+ */
 public class Tuple<T, P>
 {
 	public final T first;

@@ -1,5 +1,10 @@
 package task2;
 
+/**
+ * ID: 15906291, 15904719
+ * Names: Ben Fisher, Jethro Tuburan
+ * Enum that describes the possible states a Process could be in
+ */
 public enum ProgramState
 {
 	NON_CRIT,

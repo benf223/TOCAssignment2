@@ -1,5 +1,10 @@
 package task1;
 
+/**
+ * ID: 15906291, 15904719
+ * Names: Ben Fisher, Jethro Tuburan
+ * Class that contains a main method to drive the functionality of the first task
+ */
 public class Task1Driver
 {
 	public static void main(String[] args)

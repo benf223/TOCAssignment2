@@ -1,5 +1,11 @@
 package task2;
 
+/**
+ * ID: 15906291, 15904719
+ * Names: Ben Fisher, Jethro Tuburan
+ * Class that describes the state of a process during an execution of a Peterson's mutual exclusion algorithm
+ * This class provides functionality for transitioning the algorithms execution.
+ */
 public class Process
 {
 	public Location parent;

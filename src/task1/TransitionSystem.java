@@ -9,6 +9,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
 
+/**
+ * ID: 15906291, 15904719
+ * Names: Ben Fisher, Jethro Tuburan
+ * Class that describes a Transition system using the HashSets as sets to describe the system and a HashMap as a
+ * descriptor for the L function.
+ * This class implements a recursive DepthFirstSearch based invariant checker.
+ * This class also implements functionality to convert a ProgramGraph to an equivalent Transition System
+ */
 public class TransitionSystem
 {
 	private HashSet<State> s;

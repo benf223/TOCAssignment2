@@ -1,5 +1,10 @@
 package task2;
 
+/**
+ * ID: 15906291, 15904719
+ * Names: Ben Fisher, Jethro Tuburan
+ * Class that describes a ThreeTuple of Generic objects
+ */
 public class ThreeTuple<E, F, G>
 {
 	public E first;

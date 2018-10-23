@@ -6,6 +6,13 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Stack;
 
+/**
+ * ID: 15906291, 15904719
+ * Names: Ben Fisher, Jethro Tuburan
+ * Class that describes a Program Graph using the HashSets as sets to describe the system
+ * This class implements an iterative method of generating an interleaving of n processes of a Peterson's Mutual exclusion algorithm
+ * This class also provides getters so that it can be transformed into an equivalent Transition System
+ */
 public class ProgramGraph
 {
 	private int numberOfProcesses;
@@ -67,11 +74,6 @@ public class ProgramGraph
 					queue.add(new Tuple<>(curLoc, next));
 				}
 			}
-			else
-			{
-				// Recursive remnant
-				return;
-			}
 		}
 		else
 		{
@@ -91,8 +93,6 @@ public class ProgramGraph
 				}
 			}
 		}
-		
-		//        createLocations(queue, numberOfProcesses);
 	}
 	
 	private void createArrow(Stack<Location> toDo, int numberOfProcesses)
@@ -140,8 +140,6 @@ public class ProgramGraph
 			}
 			
 		}
-		
-		//        createArrow(toDo, numberOfProcesses);
 	}
 	
 	public static ProgramGraph getInstance(int numProcesses)
